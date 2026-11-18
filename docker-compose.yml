@@ -1,0 +1,56 @@
+# Development: this project's backend (platform + project) on
+# http://localhost:8000, against the database in .env. Run the frontend with
+# Vite (see README.md); it sends /api to this backend.
+#
+#   cp .env.example .env            # fill in DATABASE_URL and JWT_SECRET_KEY
+#   docker compose up --build
+#   open http://localhost:8000/docs
+#
+# Code under ./backend is mounted into the container: saving a file reloads
+# the API. Nothing here migrates or seeds on start. The migration owner runs,
+# on purpose:
+#   docker compose run --rm init
+# init reads .env, then .env.migrator (the schema-owning login), whose
+# values override .env.
+
+name: savic-mis-ai
+
+x-backend: &backend
+  build:
+    context: ./backend
+    target: dev
+  env_file:
+    - .env
+  volumes:
+    - ./backend:/project
+    - attachments:/app/storage
+
+services:
+  backend:
+    <<: *backend
+    ports:
+      - "8000:8000"
+
+  # The platform's init (migrations and reference seeds, all idempotent),
+  # then this project's migrations and menus, then the bootstrap seed, which
+  # grants the administrator role the new menus too.
+  init:
+    <<: *backend
+    profiles: ["init"]
+    restart: "no"
+    env_file:
+      - .env
+      - path: .env.migrator
+        required: true
+    command: >
+      sh -c "alembic upgrade head &&
+             python -m savic_common.db.seeds.seed_menu_master &&
+             python -m savic_common.db.seeds.seed_app_config &&
+             python -m savic_common.db.seeds.seed_colour_palettes &&
+             python -m savic_common.db.seeds.seed_languages &&
+             python -m savic_common.db.seeds.seed_master_data &&
+             python -m savic_common.extensions.init &&
+             python -m savic_common.db.seeds.seed_bootstrap_admin"
+
+volumes:
+  attachments:
