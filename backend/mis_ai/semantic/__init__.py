@@ -28,6 +28,7 @@ from mis_ai.semantic.operations import (
     standardize_sales_rows,
 )
 from mis_ai.semantic.snapshot import build_unified_snapshot
+from mis_ai.semantic.export import write_semantic_snapshot
 
 __all__ = [
     "FinanceValidationError",
@@ -52,4 +53,5 @@ __all__ = [
     "standardize_production_rows",
     "standardize_sales_rows",
     "build_unified_snapshot",
+    "write_semantic_snapshot",
 ]

@@ -16,3 +16,7 @@ sample FI contract without requiring cloud services or a database.
 Customer and material source IDs are standardized through the mapping step in
 `backend/mis_ai/semantic/master_data.py`. Unmapped records are rejected and
 reported for remediation instead of entering curated aggregates silently.
+
+`data/semantic/` is the local export boundary. Semantic JSON artifacts use the
+`savic-mis-ai.semantic.snapshot` envelope and are generated, so they remain
+untracked under the existing data-zone rules.
