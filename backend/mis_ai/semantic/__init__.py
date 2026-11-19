@@ -7,6 +7,11 @@ from mis_ai.semantic.finance import (
     summarize_month,
 )
 from mis_ai.semantic.master_data import DataQualityReport, standardize_master_data
+from mis_ai.semantic.features import (
+    FEATURE_CATALOGUE,
+    FeatureDefinition,
+    build_feature_snapshot,
+)
 
 __all__ = [
     "FinanceValidationError",
@@ -15,4 +20,7 @@ __all__ = [
     "summarize_month",
     "DataQualityReport",
     "standardize_master_data",
+    "FEATURE_CATALOGUE",
+    "FeatureDefinition",
+    "build_feature_snapshot",
 ]
