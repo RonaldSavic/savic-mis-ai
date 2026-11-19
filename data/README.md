@@ -12,3 +12,7 @@ The runtime zones are intentionally separate:
 Generated files in the runtime zones remain untracked. The first semantic
 slice is implemented in `backend/mis_ai/semantic/finance.py` and uses the
 sample FI contract without requiring cloud services or a database.
+
+Customer and material source IDs are standardized through the mapping step in
+`backend/mis_ai/semantic/master_data.py`. Unmapped records are rejected and
+reported for remediation instead of entering curated aggregates silently.
