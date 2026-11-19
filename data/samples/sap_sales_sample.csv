@@ -1,0 +1,3 @@
+posting_date,company_code,document_id,customer_id,material_id,currency,quantity,net_amount,uom
+2026-01-15,1000,SALES-1001,CUST-001,MAT-100,INR,10,12500.00,EA
+2026-01-20,1000,SALES-1002,CUST-002,MAT-200,INR,5,12000.00,EA

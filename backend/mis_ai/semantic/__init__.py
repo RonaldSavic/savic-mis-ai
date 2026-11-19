@@ -13,6 +13,12 @@ from mis_ai.semantic.features import (
     build_feature_snapshot,
 )
 from mis_ai.semantic.pipeline import FinancePipelineResult, run_finance_pipeline
+from mis_ai.semantic.contracts import (
+    PRODUCTION_CONTRACT,
+    SALES_CONTRACT,
+    SourceContract,
+    load_source_csv,
+)
 
 __all__ = [
     "FinanceValidationError",
@@ -26,4 +32,8 @@ __all__ = [
     "build_feature_snapshot",
     "FinancePipelineResult",
     "run_finance_pipeline",
+    "PRODUCTION_CONTRACT",
+    "SALES_CONTRACT",
+    "SourceContract",
+    "load_source_csv",
 ]
