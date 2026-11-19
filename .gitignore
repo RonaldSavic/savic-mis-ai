@@ -14,3 +14,11 @@ venv/
 .ruff_cache/
 *.dump
 *.sql
+
+# Local MIS data zones. Keep directory placeholders, never generated data.
+data/raw/*
+!data/raw/.gitkeep
+data/curated/*
+!data/curated/.gitkeep
+data/semantic/*
+!data/semantic/.gitkeep

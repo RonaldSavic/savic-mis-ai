@@ -18,19 +18,33 @@ It contains one working example of each extension point, a **Tasks** list:
 
 You need:
 - Docker Desktop, with the platform backend image loaded from its release ZIP
-- Node.js 22 and pnpm
-- read access to the Savic-Platform GitHub repository
-- the app's database URL from the password manager
+- Node.js 22 and pnpm 11.24.0
+- read access to the Savic-Platform GitHub repository for the frontend dependency
 
 ```bash
-cp .env.example .env                 # fill in DATABASE_URL and JWT_SECRET_KEY
+cp .env.example .env                 # adjust local passwords if required
 docker compose up --build            # backend on http://localhost:8000 (/docs for the API)
 
 cd frontend && pnpm install && pnpm dev    # app on http://localhost:5173
 ```
 
-Before the first run against a database, the DB administrator creates the project's schema once,
-and a migration owner runs `docker compose run --rm init`. See the guide, §3 and §4.
+Until the Platform `v1.1.0` Git tag is published, local frontend development can install the
+extracted Platform source without changing the committed dependency reference:
+
+```powershell
+pnpm install
+pnpm run link:platform-local
+pnpm dev
+```
+
+After the Platform tag becomes available, remove the local link and run a normal `pnpm install`.
+
+The development Compose stack includes a local PostgreSQL service and persistent `postgres_data`
+storage. Before the first run, copy `.env.example` to `.env`. The migration owner then runs
+`docker compose run --rm init`; this remains intentionally separate from backend startup.
+
+Local data-zone directories are provided under `data/raw`, `data/curated`, and `data/semantic`.
+They are placeholders only; generated data files remain untracked.
 
 ## Tests
 

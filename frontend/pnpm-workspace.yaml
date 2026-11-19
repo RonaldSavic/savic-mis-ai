@@ -1,3 +1,5 @@
 # pnpm settings for this app (it is not a multi-package workspace).
 allowBuilds:
   esbuild: true
+overrides:
+  '@savic-technologies-pvt-ltd/platform-common': file:../../Savic-Platform-main/frontend/packages/savic-common

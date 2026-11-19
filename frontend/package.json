@@ -10,15 +10,22 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "link:platform-local": "node ./scripts/link-local-platform.mjs"
   },
   "dependencies": {
     "@savic-technologies-pvt-ltd/platform-common": "github:Savic-Technologies-Pvt-Ltd/Savic-Platform#v1.1.0&path:frontend/packages/savic-common",
+    "@remix-run/router": "1.23.4",
+    "html-parse-stringify": "^3.1.0",
     "i18next": "^23.11.5",
+    "lucide-react": "^1.37.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-i18next": "^14.1.2",
-    "react-router-dom": "^6.26.0"
+    "react-router": "^6.26.0",
+    "react-router-dom": "^6.26.0",
+    "scheduler": "0.23.2",
+    "void-elements": "3.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.0",
