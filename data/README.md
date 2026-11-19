@@ -20,3 +20,9 @@ reported for remediation instead of entering curated aggregates silently.
 `data/semantic/` is the local export boundary. Semantic JSON artifacts use the
 `savic-mis-ai.semantic.snapshot` envelope and are generated, so they remain
 untracked under the existing data-zone rules.
+
+Build the synthetic artifact locally from `backend/`:
+
+```powershell
+python -m mis_ai.semantic.cli
+```
