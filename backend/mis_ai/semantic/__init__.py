@@ -12,6 +12,7 @@ from mis_ai.semantic.features import (
     FeatureDefinition,
     build_feature_snapshot,
 )
+from mis_ai.semantic.pipeline import FinancePipelineResult, run_finance_pipeline
 
 __all__ = [
     "FinanceValidationError",
@@ -23,4 +24,6 @@ __all__ = [
     "FEATURE_CATALOGUE",
     "FeatureDefinition",
     "build_feature_snapshot",
+    "FinancePipelineResult",
+    "run_finance_pipeline",
 ]
