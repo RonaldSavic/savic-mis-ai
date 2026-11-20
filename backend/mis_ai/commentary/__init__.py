@@ -9,6 +9,11 @@ from mis_ai.commentary.evaluation import (
     evaluate_case,
 )
 from mis_ai.commentary.prompt import build_commentary_prompt
+from mis_ai.commentary.generator import (
+    CommentaryGenerationNotConfigured,
+    CommentaryGenerator,
+    DisabledCommentaryGenerator,
+)
 
 __all__ = [
     "CommentaryRequest",
@@ -20,4 +25,7 @@ __all__ = [
     "CommentaryEvaluationResult",
     "evaluate_case",
     "build_commentary_prompt",
+    "CommentaryGenerationNotConfigured",
+    "CommentaryGenerator",
+    "DisabledCommentaryGenerator",
 ]

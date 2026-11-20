@@ -63,6 +63,11 @@ uses `/api/v1/mis-ai/commentary/variance`. It compares two months of semantic
 gross-margin evidence and returns explicit caveats; LLM integration is not
 enabled in this stage.
 
+The model-provider boundary is intentionally disabled until approved Azure
+OpenAI credentials and deployment configuration are supplied. The default
+generator raises a clear configuration error rather than making a network
+call.
+
 Run the local commentary regression cases from `backend/`:
 
 ```powershell
