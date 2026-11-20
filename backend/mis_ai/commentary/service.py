@@ -37,6 +37,16 @@ def _metric(record: Mapping[str, object], currency: str, name: str) -> Decimal |
     return None if value is None else Decimal(str(value))
 
 
+def _domain_metric(
+    record: Mapping[str, object], domain: str, currency: str, name: str
+) -> Decimal | None:
+    values = record.get(domain, {}).get(currency)
+    if not isinstance(values, Mapping) or name not in values:
+        return None
+    value = values[name]
+    return None if value is None else Decimal(str(value))
+
+
 def analyze_margin_variance(
     records: Sequence[Mapping[str, object]], request: CommentaryRequest
 ) -> CommentaryResult:
@@ -126,6 +136,58 @@ def analyze_margin_variance(
             driver_movements.append(
                 f"cost {('increased' if cost_change > 0 else 'declined')} by "
                 f"{decimal_text(abs(cost_change))} {request.currency}"
+            )
+    current_sales = _domain_metric(current or {}, "sales", request.currency, "net_amount")
+    prior_sales = _domain_metric(prior or {}, "sales", request.currency, "net_amount")
+    if current_sales is not None and prior_sales is not None:
+        sales_change = current_sales - prior_sales
+        evidence.append(
+            EvidenceItem(
+                metric="sales.net_amount",
+                period=request.current_month,
+                value=decimal_text(current_sales),
+                source="semantic.sales.net_amount",
+                interpretation=(
+                    f"Sales net amount moved by {decimal_text(sales_change)} "
+                    f"{request.currency} versus {request.prior_month}."
+                ),
+            )
+        )
+        if sales_change:
+            driver_movements.append(
+                f"sales net amount {('increased' if sales_change > 0 else 'declined')} by "
+                f"{decimal_text(abs(sales_change))} {request.currency}"
+            )
+    # Production is not currency-denominated; the snapshot stores it in its
+    # own domain, so inspect that object directly.
+    current_production = (
+        Decimal(str((current or {}).get("production", {}).get("yield_pct")))
+        if (current or {}).get("production", {}).get("yield_pct") is not None
+        else None
+    )
+    prior_production = (
+        Decimal(str((prior or {}).get("production", {}).get("yield_pct")))
+        if (prior or {}).get("production", {}).get("yield_pct") is not None
+        else None
+    )
+    if current_production is not None and prior_production is not None:
+        production_change = current_production - prior_production
+        evidence.append(
+            EvidenceItem(
+                metric="production.yield_pct",
+                period=request.current_month,
+                value=decimal_text(current_production),
+                source="semantic.production.yield_pct",
+                interpretation=(
+                    f"Production yield moved by {decimal_text(production_change)} percentage points "
+                    f"versus {request.prior_month}."
+                ),
+            )
+        )
+        if production_change:
+            driver_movements.append(
+                f"production yield {('increased' if production_change > 0 else 'declined')} by "
+                f"{decimal_text(abs(production_change))} percentage points"
             )
     caveats = (
         "This is deterministic variance analysis; no causal conclusion or LLM-generated explanation is made.",

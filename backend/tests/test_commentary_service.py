@@ -84,3 +84,28 @@ def test_metric_knowledge_is_returned_when_available():
 
     assert result.status == "READY"
     assert result.knowledge[0]["metric"] == "gross_margin"
+
+
+def test_operational_signals_are_reported_when_present():
+    records = [
+        {
+            "entity": {"company_code": "1000", "month": "2026-01"},
+            "finance": {"INR": {"gross_margin": "8000.00"}},
+            "sales": {"INR": {"net_amount": "24500.00"}},
+            "production": {"yield_pct": "98.90"},
+        },
+        {
+            "entity": {"company_code": "1000", "month": "2026-02"},
+            "finance": {"INR": {"gross_margin": "8700.00"}},
+            "sales": {"INR": {"net_amount": "30000.00"}},
+            "production": {"yield_pct": "99.10"},
+        },
+    ]
+    result = analyze_margin_variance(
+        records, CommentaryRequest("1000", "2026-02", "2026-01")
+    )
+
+    assert any(item.metric == "sales.net_amount" for item in result.evidence)
+    assert any(item.metric == "production.yield_pct" for item in result.evidence)
+    assert "sales net amount increased by 5500.00 INR" in result.summary
+    assert "production yield increased by 0.20 percentage points" in result.summary
