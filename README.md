@@ -58,6 +58,11 @@ read-only page is available at `/mis-ai/semantic` and its API resource is
 the normal local initializer; rerun that initializer after this extension
 change so the local database receives the menu and VIEW grant.
 
+The deterministic commentary page is available at `/mis-ai/commentary` and
+uses `/api/v1/mis-ai/commentary/variance`. It compares two months of semantic
+gross-margin evidence and returns explicit caveats; LLM integration is not
+enabled in this stage.
+
 ## Tests
 
 ```bash

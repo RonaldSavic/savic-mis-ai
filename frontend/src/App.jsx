@@ -24,12 +24,15 @@ import {
 } from "@savic-technologies-pvt-ltd/platform-common";
 import {
   API_RESOURCE_KEY,
+  COMMENTARY_API_RESOURCE_KEY,
+  COMMENTARY_ROUTE_PATH,
   ROUTE_PATH,
   SEMANTIC_API_RESOURCE_KEY,
   SEMANTIC_ROUTE_PATH,
 } from "./constants.js";
 import { TasksPage } from "./pages/TasksPage.jsx";
 import { SemanticSnapshotPage } from "./pages/SemanticSnapshotPage.jsx";
+import { CommentaryPage } from "./pages/CommentaryPage.jsx";
 import { platformRoutes } from "./platformRoutes.jsx";
 
 // The app shell: sign-in, the menu (built from the user's grants), and the
@@ -104,6 +107,14 @@ function AppShell() {
             element={
               <ProtectedRoute apiResourceKey={SEMANTIC_API_RESOURCE_KEY}>
                 <SemanticSnapshotPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path={COMMENTARY_ROUTE_PATH}
+            element={
+              <ProtectedRoute apiResourceKey={COMMENTARY_API_RESOURCE_KEY}>
+                <CommentaryPage />
               </ProtectedRoute>
             }
           />

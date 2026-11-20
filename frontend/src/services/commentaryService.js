@@ -1,0 +1,6 @@
+import { apiClient } from "@savic-technologies-pvt-ltd/platform-common";
+import { COMMENTARY_API_RESOURCE_KEY } from "../constants.js";
+
+export const commentaryService = {
+  analyzeVariance: (body) => apiClient.post(COMMENTARY_API_RESOURCE_KEY, body),
+};
