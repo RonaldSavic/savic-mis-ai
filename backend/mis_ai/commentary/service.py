@@ -83,14 +83,63 @@ def analyze_margin_variance(
             interpretation="Current-period gross margin.",
         ),
     ]
+    current_revenue = _metric(current or {}, request.currency, "revenue_amount")
+    prior_revenue = _metric(prior or {}, request.currency, "revenue_amount")
+    current_cost = _metric(current or {}, request.currency, "cost_amount")
+    prior_cost = _metric(prior or {}, request.currency, "cost_amount")
+    driver_movements: list[str] = []
+    if current_revenue is not None and prior_revenue is not None:
+        revenue_change = current_revenue - prior_revenue
+        evidence.append(
+            EvidenceItem(
+                metric="revenue_amount",
+                period=request.current_month,
+                value=decimal_text(current_revenue),
+                source="semantic.finance.revenue_amount",
+                interpretation=(
+                    f"Revenue moved by {decimal_text(revenue_change)} {request.currency} "
+                    f"versus {request.prior_month}."
+                ),
+            )
+        )
+        if revenue_change:
+            driver_movements.append(
+                f"revenue {('increased' if revenue_change > 0 else 'declined')} by "
+                f"{decimal_text(abs(revenue_change))} {request.currency}"
+            )
+    if current_cost is not None and prior_cost is not None:
+        cost_change = current_cost - prior_cost
+        evidence.append(
+            EvidenceItem(
+                metric="cost_amount",
+                period=request.current_month,
+                value=decimal_text(current_cost),
+                source="semantic.finance.cost_amount",
+                interpretation=(
+                    f"Cost moved by {decimal_text(cost_change)} {request.currency} "
+                    f"versus {request.prior_month}."
+                ),
+            )
+        )
+        if cost_change:
+            driver_movements.append(
+                f"cost {('increased' if cost_change > 0 else 'declined')} by "
+                f"{decimal_text(abs(cost_change))} {request.currency}"
+            )
     caveats = (
         "This is deterministic variance analysis; no causal conclusion or LLM-generated explanation is made.",
+    )
+    driver_text = (
+        " Observed metric movements: " + "; ".join(driver_movements) + "."
+        if driver_movements
+        else ""
     )
     return CommentaryResult(
         status="READY",
         summary=(
             f"Gross margin {direction} by {decimal_text(abs(variance))} "
             f"{request.currency} from {request.prior_month} to {request.current_month}."
+            f"{driver_text}"
         ),
         evidence=tuple(evidence),
         caveats=caveats,
