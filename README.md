@@ -63,6 +63,12 @@ uses `/api/v1/mis-ai/commentary/variance`. It compares two months of semantic
 gross-margin evidence and returns explicit caveats; LLM integration is not
 enabled in this stage.
 
+Run the local commentary regression cases from `backend/`:
+
+```powershell
+python -m mis_ai.commentary.cli
+```
+
 ## Tests
 
 ```bash

@@ -1,4 +1,7 @@
+import json
+
 from mis_ai.commentary.evaluation import CommentaryEvaluationCase, evaluate_case
+from mis_ai.commentary.cli import evaluate_snapshot
 from mis_ai.commentary.types import CommentaryRequest
 
 
@@ -42,3 +45,14 @@ def test_evaluation_case_reports_regression():
 
     assert result.passed is False
     assert result.failure_reason is not None
+
+
+def test_snapshot_evaluation_command_checks_known_cases(tmp_path):
+    snapshot = tmp_path / "snapshot.json"
+    snapshot.write_text(
+        '{"records": ' + json.dumps(RECORDS) + "}", encoding="utf-8"
+    )
+
+    results = evaluate_snapshot(snapshot)
+
+    assert [result.passed for result in results] == [True, True]
