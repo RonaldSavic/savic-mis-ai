@@ -2,5 +2,11 @@
 
 from mis_ai.commentary.service import analyze_margin_variance
 from mis_ai.commentary.types import CommentaryRequest, CommentaryResult
+from mis_ai.commentary.knowledge import retrieve_knowledge
 
-__all__ = ["CommentaryRequest", "CommentaryResult", "analyze_margin_variance"]
+__all__ = [
+    "CommentaryRequest",
+    "CommentaryResult",
+    "analyze_margin_variance",
+    "retrieve_knowledge",
+]

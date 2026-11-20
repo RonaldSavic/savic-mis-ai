@@ -1,0 +1,29 @@
+[
+  {
+    "id": "finance.gross_margin",
+    "metric": "gross_margin",
+    "version": "1.0",
+    "title": "Gross margin",
+    "definition": "Revenue less the standardized finance cost amount for the same company, period, and currency.",
+    "interpretation": "A positive change means the absolute gross margin increased; it does not by itself establish the cause.",
+    "source": "MIS metric definitions v1.0"
+  },
+  {
+    "id": "finance.revenue_amount",
+    "metric": "revenue_amount",
+    "version": "1.0",
+    "title": "Revenue amount",
+    "definition": "The semantic finance revenue amount calculated from quantity multiplied by unit price.",
+    "interpretation": "Revenue movement is an observed driver signal and is not a causal conclusion on its own.",
+    "source": "MIS metric definitions v1.0"
+  },
+  {
+    "id": "finance.cost_amount",
+    "metric": "cost_amount",
+    "version": "1.0",
+    "title": "Cost amount",
+    "definition": "The standardized finance cost amount associated with the same company, period, and currency.",
+    "interpretation": "Cost movement is an observed driver signal and requires supporting operational evidence for causal analysis.",
+    "source": "MIS metric definitions v1.0"
+  }
+]

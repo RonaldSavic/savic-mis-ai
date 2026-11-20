@@ -35,6 +35,7 @@ class CommentaryResult:
     caveats: tuple[str, ...]
     variance: str | None = None
     variance_pct: str | None = None
+    knowledge: tuple[dict[str, object], ...] = ()
 
 
 def decimal_text(value: Decimal) -> str:

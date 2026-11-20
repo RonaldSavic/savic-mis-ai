@@ -11,6 +11,7 @@ from mis_ai.commentary.types import (
     EvidenceItem,
     decimal_text,
 )
+from mis_ai.commentary.knowledge import retrieve_knowledge
 
 
 def _find_record(
@@ -145,4 +146,5 @@ def analyze_margin_variance(
         caveats=caveats,
         variance=decimal_text(variance),
         variance_pct=None if variance_pct is None else decimal_text(variance_pct),
+        knowledge=retrieve_knowledge(request.metric),
     )

@@ -74,3 +74,13 @@ def test_available_revenue_and_cost_are_reported_as_non_causal_drivers():
     assert "revenue increased by 5500.00 INR" in result.summary
     assert "cost increased by 4800.00 INR" in result.summary
     assert "causal" in result.caveats[0]
+
+
+def test_metric_knowledge_is_returned_when_available():
+    result = analyze_margin_variance(
+        SNAPSHOTS,
+        CommentaryRequest("1000", "2026-02", "2026-01"),
+    )
+
+    assert result.status == "READY"
+    assert result.knowledge[0]["metric"] == "gross_margin"

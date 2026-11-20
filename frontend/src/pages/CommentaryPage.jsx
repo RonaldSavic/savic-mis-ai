@@ -57,6 +57,16 @@ export function CommentaryPage() {
           </ul>
           <h4>Caveats</h4>
           <ul>{result.caveats.map((caveat) => <li key={caveat}>{caveat}</li>)}</ul>
+          {result.knowledge?.length > 0 && (
+            <>
+              <h4>Metric definitions</h4>
+              <ul>
+                {result.knowledge.map((item) => (
+                  <li key={item.id}>{item.title}: {item.definition}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </section>
       )}
     </div>
