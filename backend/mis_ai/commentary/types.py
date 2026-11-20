@@ -38,6 +38,7 @@ class CommentaryResult:
     variance_pct: str | None = None
     knowledge: tuple[dict[str, object], ...] = ()
     sources: tuple[str, ...] = ()
+    retrieval_method: str = "lexical_token_overlap_v1"
 
 
 def decimal_text(value: Decimal) -> str:

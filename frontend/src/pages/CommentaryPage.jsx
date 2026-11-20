@@ -72,6 +72,9 @@ export function CommentaryPage() {
           {result.sources?.length > 0 && (
             <p><strong>Sources:</strong> {result.sources.join(", ")}</p>
           )}
+          {result.retrieval_method && (
+            <p><strong>Retrieval:</strong> {result.retrieval_method}</p>
+          )}
         </section>
       )}
     </div>

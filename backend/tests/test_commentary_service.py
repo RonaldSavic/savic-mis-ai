@@ -85,6 +85,7 @@ def test_metric_knowledge_is_returned_when_available():
     assert result.status == "READY"
     assert result.knowledge[0]["metric"] == "gross_margin"
     assert result.sources == ("semantic.snapshot", "finance.gross_margin")
+    assert result.retrieval_method == "lexical_token_overlap_v1"
 
 
 def test_question_is_used_for_knowledge_context():
