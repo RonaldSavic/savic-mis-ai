@@ -87,6 +87,20 @@ def test_metric_knowledge_is_returned_when_available():
     assert result.sources == ("semantic.snapshot", "finance.gross_margin")
 
 
+def test_question_is_used_for_knowledge_context():
+    result = analyze_margin_variance(
+        SNAPSHOTS,
+        CommentaryRequest(
+            "1000",
+            "2026-02",
+            "2026-01",
+            question="Why did gross margin decline?",
+        ),
+    )
+
+    assert result.knowledge[0]["relevance_score"] >= 2
+
+
 def test_operational_signals_are_reported_when_present():
     records = [
         {

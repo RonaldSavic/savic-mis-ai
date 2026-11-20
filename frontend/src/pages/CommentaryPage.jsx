@@ -7,6 +7,7 @@ export function CommentaryPage() {
     prior_month: "2026-01",
     current_month: "2026-02",
     currency: "INR",
+    question: "Why did gross margin change?",
   });
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
@@ -39,6 +40,7 @@ export function CommentaryPage() {
         <input aria-label="Prior month" type="month" value={form.prior_month} onChange={(e) => update("prior_month", e.target.value)} />
         <input aria-label="Current month" type="month" value={form.current_month} onChange={(e) => update("current_month", e.target.value)} />
         <input aria-label="Currency" value={form.currency} maxLength={3} onChange={(e) => update("currency", e.target.value.toUpperCase())} />
+        <input aria-label="Question" value={form.question} onChange={(e) => update("question", e.target.value)} style={{ flexBasis: "100%" }} />
         <button type="submit">Analyze</button>
       </form>
       {error && <p role="alert" style={{ color: "var(--color-error, #b91c1c)" }}>{error}</p>}

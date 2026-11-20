@@ -16,6 +16,7 @@ class CommentaryRequest:
     prior_month: str
     currency: str = "INR"
     metric: str = "gross_margin"
+    question: str | None = None
 
 
 @dataclass(frozen=True)

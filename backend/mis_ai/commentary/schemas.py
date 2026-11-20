@@ -11,3 +11,4 @@ class VarianceRequest(BaseModel):
     prior_month: str = Field(pattern=r"^\d{4}-(0[1-9]|1[0-2])$")
     currency: str = Field(default="INR", min_length=3, max_length=3)
     metric: Literal["gross_margin"] = "gross_margin"
+    question: str | None = Field(default=None, max_length=500)

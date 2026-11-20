@@ -11,7 +11,7 @@ from mis_ai.commentary.types import (
     EvidenceItem,
     decimal_text,
 )
-from mis_ai.commentary.knowledge import retrieve_knowledge
+from mis_ai.commentary.knowledge import retrieve_knowledge_query
 
 
 def _find_record(
@@ -197,7 +197,9 @@ def analyze_margin_variance(
         if driver_movements
         else ""
     )
-    knowledge = retrieve_knowledge(request.metric)
+    knowledge = retrieve_knowledge_query(
+        request.question or request.metric, metric=request.metric
+    )
     sources = ["semantic.snapshot"]
     sources.extend(
         str(item["id"]) for item in knowledge if item.get("id") is not None

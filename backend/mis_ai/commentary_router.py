@@ -49,6 +49,7 @@ async def analyze_variance(
             prior_month=body.prior_month,
             currency=body.currency.upper(),
             metric=body.metric,
+            question=body.question,
         ),
     )
     return success(asdict(result))
