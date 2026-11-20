@@ -197,6 +197,11 @@ def analyze_margin_variance(
         if driver_movements
         else ""
     )
+    knowledge = retrieve_knowledge(request.metric)
+    sources = ["semantic.snapshot"]
+    sources.extend(
+        str(item["id"]) for item in knowledge if item.get("id") is not None
+    )
     return CommentaryResult(
         status="READY",
         summary=(
@@ -208,5 +213,6 @@ def analyze_margin_variance(
         caveats=caveats,
         variance=decimal_text(variance),
         variance_pct=None if variance_pct is None else decimal_text(variance_pct),
-        knowledge=retrieve_knowledge(request.metric),
+        knowledge=knowledge,
+        sources=tuple(sources),
     )

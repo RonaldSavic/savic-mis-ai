@@ -84,6 +84,7 @@ def test_metric_knowledge_is_returned_when_available():
 
     assert result.status == "READY"
     assert result.knowledge[0]["metric"] == "gross_margin"
+    assert result.sources == ("semantic.snapshot", "finance.gross_margin")
 
 
 def test_operational_signals_are_reported_when_present():

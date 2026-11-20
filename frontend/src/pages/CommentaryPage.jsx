@@ -67,6 +67,9 @@ export function CommentaryPage() {
               </ul>
             </>
           )}
+          {result.sources?.length > 0 && (
+            <p><strong>Sources:</strong> {result.sources.join(", ")}</p>
+          )}
         </section>
       )}
     </div>
