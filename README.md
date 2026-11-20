@@ -46,6 +46,18 @@ storage. Before the first run, copy `.env.example` to `.env`. The migration owne
 Local data-zone directories are provided under `data/raw`, `data/curated`, and `data/semantic`.
 They are placeholders only; generated data files remain untracked.
 
+The local semantic snapshot can be generated from `backend/`:
+
+```powershell
+python -m mis_ai.semantic.cli
+```
+
+When the Docker backend is running and the snapshot exists, the authenticated
+read-only page is available at `/mis-ai/semantic` and its API resource is
+`/api/v1/mis-ai/semantic/snapshot`. The new `MIS_AI_SEMANTIC` menu is seeded by
+the normal local initializer; rerun that initializer after this extension
+change so the local database receives the menu and VIEW grant.
+
 ## Tests
 
 ```bash

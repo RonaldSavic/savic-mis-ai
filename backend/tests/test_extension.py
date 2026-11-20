@@ -7,7 +7,13 @@ from savic_common.extensions.loader import route_paths
 from savic_common.extensions.spec import validate_extension
 from savic_common.scheduler.registry import JOB_REGISTRY
 
-from mis_ai.constants import API_RESOURCE_KEY, MENU_CODE, SCHEMA
+from mis_ai.constants import (
+    API_RESOURCE_KEY,
+    MENU_CODE,
+    SCHEMA,
+    SEMANTIC_API_RESOURCE_KEY,
+    SEMANTIC_MENU_CODE,
+)
 from mis_ai.extension import extension
 from mis_ai.models import Base
 
@@ -27,10 +33,11 @@ def test_routes_mount_under_api_v1():
     paths = set(route_paths(app.routes))
     assert API_RESOURCE_KEY in paths
     assert API_RESOURCE_KEY + "/{task_id}" in paths
+    assert SEMANTIC_API_RESOURCE_KEY in paths
 
 
 def test_menu_and_job_registered():
-    assert [m.menu_code for m in extension.menus] == [MENU_CODE]
+    assert [m.menu_code for m in extension.menus] == [MENU_CODE, SEMANTIC_MENU_CODE]
     assert "MIS_AI_OVERDUE_TASKS" in JOB_REGISTRY
 
 

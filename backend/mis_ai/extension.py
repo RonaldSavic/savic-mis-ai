@@ -14,13 +14,18 @@ from mis_ai.constants import (
     API_RESOURCE_KEY,
     MENU_CODE,
     ROUTE_PATH,
+    SEMANTIC_API_PREFIX,
+    SEMANTIC_API_RESOURCE_KEY,
+    SEMANTIC_MENU_CODE,
+    SEMANTIC_ROUTE_PATH,
     SCHEMA,
 )
 from mis_ai.router import router
+from mis_ai.semantic_router import router as semantic_router
 
 extension = Extension(
     name="mis_ai",
-    routers=[(router, API_PREFIX)],
+    routers=[(router, API_PREFIX), (semantic_router, SEMANTIC_API_PREFIX)],
     menus=[
         MenuSpec(
             menu_code=MENU_CODE,
@@ -31,7 +36,17 @@ extension = Extension(
             icon="list",
             display_order=500,
             actions=[a for a in STANDARD_ACTIONS if a[0] != "EXPORT"],
-        )
+        ),
+        MenuSpec(
+            menu_code=SEMANTIC_MENU_CODE,
+            menu_name="Semantic Snapshot",
+            module_group="MIS AI",
+            route_path=SEMANTIC_ROUTE_PATH,
+            api_resource_key=SEMANTIC_API_RESOURCE_KEY,
+            icon="chart",
+            display_order=510,
+            actions=[("VIEW", "View")],
+        ),
     ],
     db_schema=SCHEMA,
     migrations="mis_ai:migrations",

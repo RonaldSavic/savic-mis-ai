@@ -28,6 +28,7 @@ x-backend: &backend
       condition: service_healthy
   volumes:
     - ./backend:/project
+    - ./data:/project/data:ro
     - attachments:/app/storage
 
 services:

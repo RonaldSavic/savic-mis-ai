@@ -12,3 +12,8 @@ MENU_CODE = "MIS_AI_TASKS"
 API_PREFIX = "/mis-ai/tasks"  # mounted at /api/v1/mis-ai/tasks
 API_RESOURCE_KEY = "/api/v1" + API_PREFIX
 ROUTE_PATH = "/mis-ai/tasks"
+
+SEMANTIC_MENU_CODE = "MIS_AI_SEMANTIC"
+SEMANTIC_API_PREFIX = "/mis-ai/semantic"
+SEMANTIC_API_RESOURCE_KEY = "/api/v1" + SEMANTIC_API_PREFIX + "/snapshot"
+SEMANTIC_ROUTE_PATH = "/mis-ai/semantic"
