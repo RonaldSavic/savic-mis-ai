@@ -8,6 +8,7 @@ from mis_ai.commentary.evaluation import (
     CommentaryEvaluationResult,
     evaluate_case,
 )
+from mis_ai.commentary.prompt import build_commentary_prompt
 
 __all__ = [
     "CommentaryRequest",
@@ -18,4 +19,5 @@ __all__ = [
     "CommentaryEvaluationCase",
     "CommentaryEvaluationResult",
     "evaluate_case",
+    "build_commentary_prompt",
 ]
