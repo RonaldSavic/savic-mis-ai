@@ -74,6 +74,15 @@ Run the local commentary regression cases from `backend/`:
 python -m mis_ai.commentary.cli
 ```
 
+Run the complete local semantic-plus-commentary verification flow:
+
+```powershell
+python -m mis_ai.verify_local
+```
+
+This rebuilds the synthetic semantic snapshot and checks the deterministic
+commentary regression cases. It makes no database, cloud, LLM, or network call.
+
 ## Tests
 
 ```bash
