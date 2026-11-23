@@ -44,9 +44,17 @@ export function CommentaryPage() {
         snapshot. No LLM explanation is generated yet.
       </p>
       {readiness && (
-        <p>
-          Data readiness: <strong>{readiness.status}</strong>; periods: {readiness.available_months.join(", ") || "none"}
-        </p>
+        <section aria-label="Data readiness">
+          <p>
+            Data readiness: <strong>{readiness.status}</strong>; periods: {readiness.available_months.join(", ") || "none"}
+          </p>
+          <p>Available metrics: {readiness.available_metrics.join(", ") || "none"}</p>
+          {readiness.warnings?.length > 0 && (
+            <ul role="status">
+              {readiness.warnings.map((warning) => <li key={warning}>{warning}</li>)}
+            </ul>
+          )}
+        </section>
       )}
       <form onSubmit={submit} style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
         <input aria-label="Company code" value={form.company_code} onChange={(e) => update("company_code", e.target.value)} />
@@ -77,7 +85,9 @@ export function CommentaryPage() {
               <h4>Metric definitions</h4>
               <ul>
                 {result.knowledge.map((item) => (
-                  <li key={item.id}>{item.title}: {item.definition}</li>
+                  <li key={item.id}>
+                    {item.title}: {item.definition} (score {item.relevance_score ?? "n/a"}; {item.source})
+                  </li>
                 ))}
               </ul>
             </>
