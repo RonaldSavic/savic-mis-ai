@@ -12,5 +12,7 @@ def test_revenue_and_production_variance_metrics_are_supported():
 
     assert revenue.status == "READY" and revenue.variance == "25.00"
     assert revenue.variance_pct == "25.00"
+    assert revenue.metric == "revenue_amount"
     assert yield_result.status == "READY" and yield_result.variance == "5.00"
     assert yield_result.variance_pct is None
+    assert yield_result.metric == "production_yield_pct"

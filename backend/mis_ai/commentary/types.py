@@ -39,6 +39,7 @@ class CommentaryResult:
     knowledge: tuple[dict[str, object], ...] = ()
     sources: tuple[str, ...] = ()
     retrieval_method: str = "lexical_token_overlap_v1"
+    metric: str = "gross_margin"
 
 
 def decimal_text(value: Decimal) -> str:

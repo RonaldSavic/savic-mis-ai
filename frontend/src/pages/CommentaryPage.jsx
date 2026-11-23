@@ -74,6 +74,7 @@ export function CommentaryPage() {
       {result && (
         <section aria-label="Commentary result" style={{ marginTop: "1.5rem" }}>
           <h3>{result.status}</h3>
+          <p>Metric: <strong>{result.metric}</strong></p>
           <p>{result.summary}</p>
           {result.variance && (
             <p>

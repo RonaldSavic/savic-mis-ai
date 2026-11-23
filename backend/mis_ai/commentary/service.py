@@ -303,4 +303,5 @@ def analyze_variance(
         ),
         knowledge=knowledge,
         sources=sources,
+        metric=request.metric,
     )
