@@ -45,7 +45,9 @@ def assess_readiness(
         warnings.append("No semantic records exist for this company.")
     if len(months) < 2:
         warnings.append("At least two periods are needed for variance analysis.")
-    if required_metric and required_metric not in metrics:
+    metric_alias = {"production_yield_pct": "production.yield_pct"}
+    required_metric_key = metric_alias.get(required_metric, required_metric)
+    if required_metric_key and required_metric_key not in metrics:
         warnings.append(f"Selected metric {required_metric!r} is not available.")
     return CommentaryReadiness(
         status="READY" if not warnings else "INCOMPLETE",

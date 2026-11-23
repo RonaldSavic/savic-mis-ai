@@ -277,8 +277,13 @@ def analyze_variance(
         )
     variance = current_value - prior_value
     direction = "increased" if variance > 0 else "declined" if variance < 0 else "was unchanged"
+    knowledge_metric = (
+        "production.yield_pct"
+        if request.metric == "production_yield_pct"
+        else request.metric
+    )
     knowledge = (retriever or LexicalKnowledgeRetriever()).retrieve(
-        request.question or request.metric, metric=request.metric
+        request.question or knowledge_metric, metric=knowledge_metric
     )
     evidence = (
         EvidenceItem(request.metric, request.prior_month, decimal_text(prior_value), source, f"Prior-period {title.lower()}."),

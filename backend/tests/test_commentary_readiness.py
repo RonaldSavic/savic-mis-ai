@@ -44,3 +44,24 @@ def test_readiness_identifies_missing_company_data():
 
     assert result.status == "INCOMPLETE"
     assert result.warnings
+
+
+def test_production_metric_alias_is_recognized():
+    result = assess_readiness(
+        [
+            {
+                "entity": {"company_code": "1000", "month": "2026-01"},
+                "production": {"yield_pct": "98.00"},
+            },
+            {
+                "entity": {"company_code": "1000", "month": "2026-02"},
+                "production": {"yield_pct": "99.00"},
+            },
+        ],
+        "1000",
+        "INR",
+        required_metric="production_yield_pct",
+    )
+
+    assert result.status == "READY"
+    assert not result.warnings
