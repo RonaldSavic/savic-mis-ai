@@ -69,7 +69,10 @@ async def get_commentary_readiness(
     _db: DbSession,
     company_code: str = Query(..., min_length=1, max_length=20),
     currency: str = Query(default="INR", min_length=3, max_length=3),
+    metric: str | None = Query(default=None, max_length=40),
     _current_user: CurrentUser = Depends(require_access(COMMENTARY_MENU_CODE, "VIEW")),
 ):
-    readiness = assess_readiness(_load_records(), company_code, currency.upper())
+    readiness = assess_readiness(
+        _load_records(), company_code, currency.upper(), required_metric=metric
+    )
     return success(asdict(readiness))

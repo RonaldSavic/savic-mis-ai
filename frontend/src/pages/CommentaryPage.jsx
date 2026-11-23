@@ -16,10 +16,10 @@ export function CommentaryPage() {
 
   useEffect(() => {
     commentaryService
-      .getReadiness(form.company_code, form.currency)
+      .getReadiness(form.company_code, form.currency, form.metric)
       .then((response) => setReadiness(response.data))
       .catch(() => setReadiness(null));
-  }, [form.company_code, form.currency]);
+  }, [form.company_code, form.currency, form.metric]);
 
   function update(field, value) {
     setForm((current) => ({ ...current, [field]: value }));

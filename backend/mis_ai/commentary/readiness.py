@@ -16,7 +16,10 @@ class CommentaryReadiness:
 
 
 def assess_readiness(
-    records: Sequence[Mapping[str, object]], company_code: str, currency: str
+    records: Sequence[Mapping[str, object]],
+    company_code: str,
+    currency: str,
+    required_metric: str | None = None,
 ) -> CommentaryReadiness:
     matching = [
         record
@@ -42,6 +45,8 @@ def assess_readiness(
         warnings.append("No semantic records exist for this company.")
     if len(months) < 2:
         warnings.append("At least two periods are needed for variance analysis.")
+    if required_metric and required_metric not in metrics:
+        warnings.append(f"Selected metric {required_metric!r} is not available.")
     return CommentaryReadiness(
         status="READY" if not warnings else "INCOMPLETE",
         company_code=company_code,
