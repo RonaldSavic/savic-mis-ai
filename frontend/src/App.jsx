@@ -44,49 +44,21 @@ function AppShell() {
   const navigate = useNavigate();
 
   return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        fontFamily: "system-ui",
-        background: "var(--color-background, #fff)",
-        color: "var(--color-text-primary, #111827)",
-      }}
-    >
-      <aside
-        style={{
-          width: 220,
-          flexShrink: 0,
-          borderRight: "1px solid var(--color-border, #e5e7eb)",
-          background: "var(--color-surface, transparent)",
-        }}
-      >
-        <div
-          style={{
-            padding: "1rem",
-            fontWeight: 700,
-            color: "var(--color-primary, inherit)",
-          }}
-        >
-          MIS AI
+    <div className="mis-shell">
+      <aside className="mis-sidebar">
+        <div className="mis-brand">
+          <span className="mis-brand-mark">M</span>
+          <div className="mis-brand-title">MIS AI</div>
+          <div className="mis-brand-subtitle">Management intelligence suite</div>
         </div>
         <MenuRenderer onNavigate={(path) => navigate(path)} />
         <PlatformCompaniesLink />
       </aside>
-      <main style={{ flex: 1, minWidth: 0 }}>
-        <header
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: "1rem",
-            padding: "0.75rem 1.5rem",
-            borderBottom: "1px solid var(--color-border, #e5e7eb)",
-          }}
-        >
+      <main className="mis-main">
+        <header className="mis-header">
           <NotificationBell />
-          <span style={{ fontSize: "0.875rem" }}>{user?.username}</span>
-          <button type="button" onClick={() => logout()}>
+          <span className="mis-user">Signed in as <strong>{user?.username}</strong></span>
+          <button className="mis-logout" type="button" onClick={() => logout()}>
             Log out
           </button>
         </header>

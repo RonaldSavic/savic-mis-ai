@@ -2,116 +2,19 @@ import { useEffect, useState } from "react";
 import { commentaryService } from "../services/commentaryService.js";
 
 export function CommentaryPage() {
-  const [form, setForm] = useState({
-    company_code: "1000",
-    prior_month: "2026-01",
-    current_month: "2026-02",
-    currency: "INR",
-    metric: "gross_margin",
-    question: "Why did gross margin change?",
-  });
+  const [form, setForm] = useState({ company_code: "1000", prior_month: "2026-01", current_month: "2026-02", currency: "INR", metric: "gross_margin", question: "Why did gross margin change?" });
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [readiness, setReadiness] = useState(null);
-
-  useEffect(() => {
-    commentaryService
-      .getReadiness(form.company_code, form.currency, form.metric)
-      .then((response) => setReadiness(response.data))
-      .catch(() => setReadiness(null));
-  }, [form.company_code, form.currency, form.metric]);
-
-  function update(field, value) {
-    setForm((current) => ({ ...current, [field]: value }));
-  }
-
-  async function submit(event) {
-    event.preventDefault();
-    setError(null);
-    setResult(null);
-    try {
-      const response = await commentaryService.analyzeVariance(form);
-      setResult(response.data);
-    } catch (err) {
-      setError(err.message);
-    }
-  }
-
-  return (
-    <div style={{ padding: "1.5rem", maxWidth: 900 }}>
-      <h2 style={{ marginTop: 0 }}>Commentary Analysis</h2>
-      <p>
-        Deterministic variance analysis from the local semantic snapshot. No
-        LLM explanation is generated yet.
-      </p>
-      {readiness && (
-        <section aria-label="Data readiness">
-          <p>
-            Data readiness: <strong>{readiness.status}</strong>; periods: {readiness.available_months.join(", ") || "none"}
-          </p>
-          <p>Available metrics: {readiness.available_metrics.join(", ") || "none"}</p>
-          {readiness.warnings?.length > 0 && (
-            <ul role="status">
-              {readiness.warnings.map((warning) => <li key={warning}>{warning}</li>)}
-            </ul>
-          )}
-        </section>
-      )}
-      <form onSubmit={submit} style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-        <input aria-label="Company code" value={form.company_code} onChange={(e) => update("company_code", e.target.value)} />
-        <input aria-label="Prior month" type="month" value={form.prior_month} onChange={(e) => update("prior_month", e.target.value)} />
-        <input aria-label="Current month" type="month" value={form.current_month} onChange={(e) => update("current_month", e.target.value)} />
-        <input aria-label="Currency" value={form.currency} maxLength={3} onChange={(e) => update("currency", e.target.value.toUpperCase())} />
-        <select aria-label="Metric" value={form.metric} onChange={(e) => update("metric", e.target.value)}>
-          <option value="gross_margin">Gross margin</option>
-          <option value="revenue_amount">Revenue</option>
-          <option value="production_yield_pct">Production yield</option>
-        </select>
-        <input aria-label="Question" value={form.question} onChange={(e) => update("question", e.target.value)} style={{ flexBasis: "100%" }} />
-        <button type="submit">Analyze</button>
-      </form>
-      {error && <p role="alert" style={{ color: "var(--color-error, #b91c1c)" }}>{error}</p>}
-      {result && (
-        <section aria-label="Commentary result" style={{ marginTop: "1.5rem" }}>
-          <h3>{result.status}</h3>
-          <p>Metric: <strong>{result.metric}</strong></p>
-          <p>{result.summary}</p>
-          {result.variance && (
-            <p>
-              Variance: {result.variance}
-              {result.variance_pct != null ? ` (${result.variance_pct}%)` : ""}
-            </p>
-          )}
-          <h4>Evidence</h4>
-          <ul>
-            {result.evidence.map((item) => (
-              <li key={`${item.metric}-${item.period}`}>
-                {item.period}: {item.metric} = {item.value} ({item.interpretation})
-              </li>
-            ))}
-          </ul>
-          <h4>Caveats</h4>
-          <ul>{result.caveats.map((caveat) => <li key={caveat}>{caveat}</li>)}</ul>
-          {result.knowledge?.length > 0 && (
-            <>
-              <h4>Metric definitions</h4>
-              <ul>
-                {result.knowledge.map((item) => (
-                  <li key={item.id}>
-                    {item.title}: {item.definition} (score {item.relevance_score ?? "n/a"}; {item.source})
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {result.sources?.length > 0 && (
-            <p><strong>Sources:</strong> {result.sources.join(", ")}</p>
-          )}
-          {result.retrieval_method && (
-            <p><strong>Retrieval:</strong> {result.retrieval_method}</p>
-          )}
-        </section>
-      )}
-    </div>
-  );
+  useEffect(() => { commentaryService.getReadiness(form.company_code, form.currency, form.metric).then((response) => setReadiness(response.data)).catch(() => setReadiness(null)); }, [form.company_code, form.currency, form.metric]);
+  function update(field, value) { setForm((current) => ({ ...current, [field]: value })); }
+  async function submit(event) { event.preventDefault(); setError(null); setResult(null); try { setResult((await commentaryService.analyzeVariance(form)).data); } catch (err) { setError(err.message); } }
+  return <div className="mis-page">
+    <p className="mis-eyebrow">MIS AI / Decision support</p><h1>Commentary Analysis</h1>
+    <p className="mis-page-lead">Evidence-backed variance analysis from the local semantic snapshot. Review the numbers first, then use the explanation to guide the next business conversation.</p>
+    {readiness && <section className="mis-card mis-card-body" aria-label="Data readiness"><div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}><div><div className="mis-stat-label">Data readiness</div><div style={{ marginTop: 6 }}><span className={`mis-status ${readiness.status === "READY" ? "mis-status-ready" : "mis-status-warning"}`}>{readiness.status}</span></div></div><div className="mis-muted" style={{ fontSize: 13 }}>Periods: {readiness.available_months.join(", ") || "none"}</div></div><p className="mis-muted" style={{ marginBottom: 0, fontSize: 13 }}>Available metrics: {readiness.available_metrics.join(", ") || "none"}</p>{readiness.warnings?.length > 0 && <ul className="mis-list" role="status">{readiness.warnings.map((warning) => <li key={warning}>{warning}</li>)}</ul>}</section>}
+    <form className="mis-card mis-card-body" onSubmit={submit} style={{ marginTop: 18 }}><div className="mis-card-header" style={{ margin: "-22px -22px 22px" }}><h2>Define the comparison</h2></div><div className="mis-form-grid"><div className="mis-field"><label htmlFor="company-code">Company code</label><input id="company-code" aria-label="Company code" value={form.company_code} onChange={(e) => update("company_code", e.target.value)} /></div><div className="mis-field"><label htmlFor="prior-month">Prior period</label><input id="prior-month" aria-label="Prior month" type="month" value={form.prior_month} onChange={(e) => update("prior_month", e.target.value)} /></div><div className="mis-field"><label htmlFor="current-month">Current period</label><input id="current-month" aria-label="Current month" type="month" value={form.current_month} onChange={(e) => update("current_month", e.target.value)} /></div><div className="mis-field"><label htmlFor="currency">Currency</label><input id="currency" aria-label="Currency" value={form.currency} maxLength={3} onChange={(e) => update("currency", e.target.value.toUpperCase())} /></div><div className="mis-field"><label htmlFor="metric">Metric</label><select id="metric" aria-label="Metric" value={form.metric} onChange={(e) => update("metric", e.target.value)}><option value="gross_margin">Gross margin</option><option value="revenue_amount">Revenue</option><option value="production_yield_pct">Production yield</option></select></div><div className="mis-field mis-field-wide"><label htmlFor="question">Business question</label><input id="question" aria-label="Question" value={form.question} onChange={(e) => update("question", e.target.value)} /></div></div><button className="mis-button" type="submit" style={{ marginTop: 18 }}>Analyze variance</button></form>
+    {error && <div className="mis-alert" role="alert">{error}</div>}
+    {result && <section className="mis-card mis-card-body" aria-label="Commentary result" style={{ marginTop: 18 }}><div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "center", flexWrap: "wrap" }}><div><div className="mis-stat-label">Analysis result</div><h2 style={{ margin: "5px 0 0", fontSize: 21 }}>{result.metric}</h2></div><span className={`mis-status ${result.status === "READY" ? "mis-status-ready" : "mis-status-warning"}`}>{result.status}</span></div><p style={{ margin: "20px 0 8px", fontSize: 16, lineHeight: 1.55 }}>{result.summary}</p>{result.variance && <div className="mis-grid" style={{ margin: "18px 0" }}><div className="mis-card mis-stat"><div className="mis-stat-label">Variance</div><div className="mis-stat-value">{result.variance}</div><div className="mis-stat-note">{result.variance_pct != null ? `${result.variance_pct}% change` : "absolute movement"}</div></div></div>}<h3 style={{ fontSize: 15, marginBottom: 0 }}>Evidence</h3><div className="mis-evidence">{result.evidence.map((item) => <div className="mis-evidence-item" key={`${item.metric}-${item.period}`}><strong>{item.period} · {item.metric}</strong><span>{item.value} — {item.interpretation}</span></div>)}</div><h3 style={{ fontSize: 15, margin: "24px 0 0" }}>Caveats</h3><ul className="mis-list">{result.caveats.map((caveat) => <li key={caveat}>{caveat}</li>)}</ul>{result.knowledge?.length > 0 && <><h3 style={{ fontSize: 15, margin: "24px 0 0" }}>Metric definitions</h3><ul className="mis-list">{result.knowledge.map((item) => <li key={item.id}>{item.title}: {item.definition} (score {item.relevance_score ?? "n/a"}; {item.source})</li>)}</ul></>}{result.sources?.length > 0 && <p className="mis-muted" style={{ marginTop: 22, fontSize: 12 }}><strong>Sources:</strong> {result.sources.join(", ")} · <strong>Retrieval:</strong> {result.retrieval_method}</p>}</section>}
+  </div>;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "@savic-technologies-pvt-ltd/platform-common/i18n";
 import "@savic-technologies-pvt-ltd/platform-common/styles";
+import "./styles.css";
 import { App } from "./App.jsx";
 
 // Register this project's dashboard widgets here, before anything renders:

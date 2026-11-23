@@ -2,44 +2,7 @@ import { useEffect, useState } from "react";
 import { semanticService } from "../services/semanticService.js";
 
 export function SemanticSnapshotPage() {
-  const [document, setDocument] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    semanticService
-      .getSnapshot()
-      .then((response) => setDocument(response.data))
-      .catch((err) => setError(err.message));
-  }, []);
-
-  return (
-    <div style={{ padding: "1.5rem", maxWidth: 1000 }}>
-      <h2 style={{ marginTop: 0 }}>Semantic Snapshot</h2>
-      <p>Read-only metrics generated from the local semantic pipeline.</p>
-      {error && (
-        <p role="alert" style={{ color: "var(--color-error, #b91c1c)" }}>
-          {error}
-        </p>
-      )}
-      {!document && !error && <p>Loading…</p>}
-      {document && (
-        <>
-          <p>
-            Records: {document.record_count} · Sources: {document.source_file_count} · Definitions: {document.definitions_version}
-          </p>
-          <p>Source files: {document.source_files.join(", ")}</p>
-          <pre
-            style={{
-              overflowX: "auto",
-              padding: "1rem",
-              background: "#f3f4f6",
-              borderRadius: "0.25rem",
-            }}
-          >
-            {JSON.stringify(document.records, null, 2)}
-          </pre>
-        </>
-      )}
-    </div>
-  );
+  const [document, setDocument] = useState(null); const [error, setError] = useState(null);
+  useEffect(() => { semanticService.getSnapshot().then((response) => setDocument(response.data)).catch((err) => setError(err.message)); }, []);
+  return <div className="mis-page"><p className="mis-eyebrow">MIS AI / Data foundation</p><h1>Semantic Snapshot</h1><p className="mis-page-lead">A read-only, versioned view of the standardized metrics available to downstream analysis.</p>{error && <p className="mis-alert" role="alert">{error}</p>}{!document && !error && <p className="mis-muted">Loading…</p>}{document && <><div className="mis-grid"><div className="mis-card mis-stat"><div className="mis-stat-label">Records</div><div className="mis-stat-value">{document.record_count}</div></div><div className="mis-card mis-stat"><div className="mis-stat-label">Source files</div><div className="mis-stat-value">{document.source_file_count}</div></div><div className="mis-card mis-stat"><div className="mis-stat-label">Definitions</div><div className="mis-stat-value">v{document.definitions_version}</div></div></div><section className="mis-card mis-card-body" style={{ marginTop: 18 }}><h2 style={{ marginTop: 0, fontSize: 16 }}>Source lineage</h2><p className="mis-muted" style={{ fontSize: 13 }}>{document.source_files.join(" · ")}</p></section><section className="mis-card mis-card-body" style={{ marginTop: 18 }}><h2 style={{ margin: "0 0 14px", fontSize: 16 }}>Standardized records</h2><pre className="mis-code">{JSON.stringify(document.records, null, 2)}</pre></section></>}</div>;
 }
