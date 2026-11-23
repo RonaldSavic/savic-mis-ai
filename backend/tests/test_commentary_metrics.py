@@ -11,4 +11,6 @@ def test_revenue_and_production_variance_metrics_are_supported():
     yield_result = analyze_variance(records, CommentaryRequest("1000", "2026-02", "2026-01", metric="production_yield_pct"))
 
     assert revenue.status == "READY" and revenue.variance == "25.00"
+    assert revenue.variance_pct == "25.00"
     assert yield_result.status == "READY" and yield_result.variance == "5.00"
+    assert yield_result.variance_pct is None

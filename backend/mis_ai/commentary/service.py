@@ -291,6 +291,11 @@ def analyze_variance(
         evidence=evidence,
         caveats=("This is deterministic variance analysis; no causal conclusion or LLM-generated explanation is made.",),
         variance=decimal_text(variance),
+        variance_pct=(
+            decimal_text(variance / abs(prior_value) * Decimal("100"))
+            if request.metric == "revenue_amount" and prior_value
+            else None
+        ),
         knowledge=knowledge,
         sources=sources,
     )

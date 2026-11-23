@@ -75,7 +75,12 @@ export function CommentaryPage() {
         <section aria-label="Commentary result" style={{ marginTop: "1.5rem" }}>
           <h3>{result.status}</h3>
           <p>{result.summary}</p>
-          {result.variance && <p>Variance: {result.variance} ({result.variance_pct}%)</p>}
+          {result.variance && (
+            <p>
+              Variance: {result.variance}
+              {result.variance_pct != null ? ` (${result.variance_pct}%)` : ""}
+            </p>
+          )}
           <h4>Evidence</h4>
           <ul>
             {result.evidence.map((item) => (
