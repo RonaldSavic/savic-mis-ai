@@ -25,5 +25,23 @@
     "definition": "The standardized finance cost amount associated with the same company, period, and currency.",
     "interpretation": "Cost movement is an observed driver signal and requires supporting operational evidence for causal analysis.",
     "source": "MIS metric definitions v1.0"
+  },
+  {
+    "id": "sales.net_amount",
+    "metric": "sales.net_amount",
+    "version": "1.0",
+    "title": "Sales net amount",
+    "definition": "Standardized Sales net amount for the same company, period, and currency.",
+    "interpretation": "Sales movement is an observed commercial signal and does not prove the cause of a margin change.",
+    "source": "MIS metric definitions v1.0"
+  },
+  {
+    "id": "production.yield_pct",
+    "metric": "production.yield_pct",
+    "version": "1.0",
+    "title": "Production yield",
+    "definition": "Produced quantity divided by produced plus scrapped quantity, expressed as a percentage.",
+    "interpretation": "Production yield movement is an operational signal and requires further investigation before causal claims.",
+    "source": "MIS metric definitions v1.0"
   }
 ]

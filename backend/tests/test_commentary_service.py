@@ -144,3 +144,6 @@ def test_operational_signals_are_reported_when_present():
     assert any(item.metric == "production.yield_pct" for item in result.evidence)
     assert "sales net amount increased by 5500.00 INR" in result.summary
     assert "production yield increased by 0.20 percentage points" in result.summary
+    assert any(
+        item["metric"] == "production.yield_pct" for item in result.knowledge
+    )

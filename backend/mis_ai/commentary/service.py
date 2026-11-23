@@ -203,9 +203,18 @@ def analyze_margin_variance(
         else ""
     )
     knowledge_retriever = retriever or LexicalKnowledgeRetriever()
-    knowledge = knowledge_retriever.retrieve(
-        request.question or request.metric, metric=request.metric
-    )
+    knowledge_items: list[dict[str, object]] = []
+    seen_knowledge_ids: set[str] = set()
+    evidence_metrics = {item.metric for item in evidence}
+    for metric in sorted(evidence_metrics):
+        for item in knowledge_retriever.retrieve(
+            request.question or metric, metric=metric
+        ):
+            item_id = str(item.get("id", ""))
+            if item_id not in seen_knowledge_ids:
+                seen_knowledge_ids.add(item_id)
+                knowledge_items.append(item)
+    knowledge = tuple(knowledge_items)
     sources = ["semantic.snapshot"]
     sources.extend(
         str(item["id"]) for item in knowledge if item.get("id") is not None
