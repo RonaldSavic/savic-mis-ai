@@ -14,6 +14,8 @@ from mis_ai.commentary.generator import (
     CommentaryGenerator,
     DisabledCommentaryGenerator,
 )
+from mis_ai.commentary.knowledge import KnowledgeRetriever, LexicalKnowledgeRetriever
+from mis_ai.commentary.readiness import CommentaryReadiness, assess_readiness
 
 __all__ = [
     "CommentaryRequest",
@@ -28,4 +30,8 @@ __all__ = [
     "CommentaryGenerationNotConfigured",
     "CommentaryGenerator",
     "DisabledCommentaryGenerator",
+    "KnowledgeRetriever",
+    "LexicalKnowledgeRetriever",
+    "CommentaryReadiness",
+    "assess_readiness",
 ]

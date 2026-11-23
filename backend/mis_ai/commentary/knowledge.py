@@ -5,11 +5,32 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol
 
 DEFAULT_KNOWLEDGE_PATH = (
     Path(__file__).resolve().parents[3] / "data/knowledge/metric_definitions.json"
 )
+
+
+class KnowledgeRetriever(Protocol):
+    def retrieve(
+        self, query: str, metric: str | None = None, top_k: int = 3
+    ) -> tuple[dict[str, Any], ...]:
+        """Retrieve ranked knowledge context."""
+
+
+class LexicalKnowledgeRetriever:
+    """Current transparent retriever; replaceable by a future vector adapter."""
+
+    method = "lexical_token_overlap_v1"
+
+    def __init__(self, path: str | Path = DEFAULT_KNOWLEDGE_PATH):
+        self.path = Path(path)
+
+    def retrieve(
+        self, query: str, metric: str | None = None, top_k: int = 3
+    ) -> tuple[dict[str, Any], ...]:
+        return retrieve_knowledge_query(query, metric, self.path, top_k)
 
 
 def retrieve_knowledge(
