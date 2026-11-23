@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { commentaryService } from "../services/commentaryService.js";
 
 export function CommentaryPage() {
@@ -11,6 +11,14 @@ export function CommentaryPage() {
   });
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [readiness, setReadiness] = useState(null);
+
+  useEffect(() => {
+    commentaryService
+      .getReadiness(form.company_code, form.currency)
+      .then((response) => setReadiness(response.data))
+      .catch(() => setReadiness(null));
+  }, [form.company_code, form.currency]);
 
   function update(field, value) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -35,6 +43,11 @@ export function CommentaryPage() {
         Deterministic gross-margin variance analysis from the local semantic
         snapshot. No LLM explanation is generated yet.
       </p>
+      {readiness && (
+        <p>
+          Data readiness: <strong>{readiness.status}</strong>; periods: {readiness.available_months.join(", ") || "none"}
+        </p>
+      )}
       <form onSubmit={submit} style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
         <input aria-label="Company code" value={form.company_code} onChange={(e) => update("company_code", e.target.value)} />
         <input aria-label="Prior month" type="month" value={form.prior_month} onChange={(e) => update("prior_month", e.target.value)} />

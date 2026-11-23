@@ -11,7 +11,10 @@ from mis_ai.commentary.types import (
     EvidenceItem,
     decimal_text,
 )
-from mis_ai.commentary.knowledge import retrieve_knowledge_query
+from mis_ai.commentary.knowledge import (
+    KnowledgeRetriever,
+    LexicalKnowledgeRetriever,
+)
 
 
 def _find_record(
@@ -48,7 +51,9 @@ def _domain_metric(
 
 
 def analyze_margin_variance(
-    records: Sequence[Mapping[str, object]], request: CommentaryRequest
+    records: Sequence[Mapping[str, object]],
+    request: CommentaryRequest,
+    retriever: KnowledgeRetriever | None = None,
 ) -> CommentaryResult:
     """Compare gross margin across two periods using only supplied evidence."""
 
@@ -197,7 +202,8 @@ def analyze_margin_variance(
         if driver_movements
         else ""
     )
-    knowledge = retrieve_knowledge_query(
+    knowledge_retriever = retriever or LexicalKnowledgeRetriever()
+    knowledge = knowledge_retriever.retrieve(
         request.question or request.metric, metric=request.metric
     )
     sources = ["semantic.snapshot"]

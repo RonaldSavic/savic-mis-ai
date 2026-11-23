@@ -102,6 +102,25 @@ def test_question_is_used_for_knowledge_context():
     assert result.knowledge[0]["relevance_score"] >= 2
 
 
+def test_analyzer_accepts_an_injected_retriever():
+    class StubRetriever:
+        def retrieve(self, query, metric=None, top_k=3):
+            assert query == "Why did gross margin change?"
+            assert metric == "gross_margin"
+            return ({"id": "stub.definition", "metric": metric},)
+
+    result = analyze_margin_variance(
+        SNAPSHOTS,
+        CommentaryRequest(
+            "1000", "2026-02", "2026-01", question="Why did gross margin change?"
+        ),
+        retriever=StubRetriever(),
+    )
+
+    assert result.knowledge == ({"id": "stub.definition", "metric": "gross_margin"},)
+    assert result.sources == ("semantic.snapshot", "stub.definition")
+
+
 def test_operational_signals_are_reported_when_present():
     records = [
         {
