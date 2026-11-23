@@ -17,12 +17,16 @@ def write_semantic_snapshot(
 
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
+    records = list(snapshots)
+    sources = sorted(str(source) for source in source_files)
     document = {
         "schema": "savic-mis-ai.semantic.snapshot",
         "schema_version": "1.0",
         "definitions_version": definitions_version,
-        "source_files": sorted(str(source) for source in source_files),
-        "records": list(snapshots),
+        "source_files": sources,
+        "source_file_count": len(sources),
+        "record_count": len(records),
+        "records": records,
     }
     destination.write_text(
         json.dumps(document, indent=2, sort_keys=True) + "\n", encoding="utf-8"

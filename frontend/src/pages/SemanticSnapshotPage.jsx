@@ -25,8 +25,9 @@ export function SemanticSnapshotPage() {
       {document && (
         <>
           <p>
-            Source files: {document.source_files.join(", ")} · Definitions: {document.definitions_version}
+            Records: {document.record_count} · Sources: {document.source_file_count} · Definitions: {document.definitions_version}
           </p>
+          <p>Source files: {document.source_files.join(", ")}</p>
           <pre
             style={{
               overflowX: "auto",
