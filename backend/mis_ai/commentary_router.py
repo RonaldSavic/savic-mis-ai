@@ -13,7 +13,7 @@ from savic_common.core.envelope import ApiResponse, success
 from savic_common.rbac.dependencies import require_access
 
 from mis_ai.commentary.schemas import VarianceRequest
-from mis_ai.commentary.service import analyze_margin_variance
+from mis_ai.commentary.service import analyze_variance
 from mis_ai.commentary.readiness import assess_readiness
 from mis_ai.commentary.types import CommentaryRequest
 from mis_ai.constants import COMMENTARY_MENU_CODE
@@ -46,7 +46,7 @@ async def analyze_variance(
     _current_user: CurrentUser = Depends(require_access(COMMENTARY_MENU_CODE, "VIEW")),
 ):
     records = _load_records()
-    result = analyze_margin_variance(
+    result = analyze_variance(
         records,
         CommentaryRequest(
             company_code=body.company_code,

@@ -7,6 +7,7 @@ export function CommentaryPage() {
     prior_month: "2026-01",
     current_month: "2026-02",
     currency: "INR",
+    metric: "gross_margin",
     question: "Why did gross margin change?",
   });
   const [result, setResult] = useState(null);
@@ -40,8 +41,8 @@ export function CommentaryPage() {
     <div style={{ padding: "1.5rem", maxWidth: 900 }}>
       <h2 style={{ marginTop: 0 }}>Commentary Analysis</h2>
       <p>
-        Deterministic gross-margin variance analysis from the local semantic
-        snapshot. No LLM explanation is generated yet.
+        Deterministic variance analysis from the local semantic snapshot. No
+        LLM explanation is generated yet.
       </p>
       {readiness && (
         <section aria-label="Data readiness">
@@ -61,6 +62,11 @@ export function CommentaryPage() {
         <input aria-label="Prior month" type="month" value={form.prior_month} onChange={(e) => update("prior_month", e.target.value)} />
         <input aria-label="Current month" type="month" value={form.current_month} onChange={(e) => update("current_month", e.target.value)} />
         <input aria-label="Currency" value={form.currency} maxLength={3} onChange={(e) => update("currency", e.target.value.toUpperCase())} />
+        <select aria-label="Metric" value={form.metric} onChange={(e) => update("metric", e.target.value)}>
+          <option value="gross_margin">Gross margin</option>
+          <option value="revenue_amount">Revenue</option>
+          <option value="production_yield_pct">Production yield</option>
+        </select>
         <input aria-label="Question" value={form.question} onChange={(e) => update("question", e.target.value)} style={{ flexBasis: "100%" }} />
         <button type="submit">Analyze</button>
       </form>

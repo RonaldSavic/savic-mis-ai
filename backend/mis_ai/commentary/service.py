@@ -233,3 +233,64 @@ def analyze_margin_variance(
         knowledge=knowledge,
         sources=tuple(sources),
     )
+
+
+def analyze_variance(
+    records: Sequence[Mapping[str, object]],
+    request: CommentaryRequest,
+    retriever: KnowledgeRetriever | None = None,
+) -> CommentaryResult:
+    """Dispatch deterministic analysis for supported semantic metrics."""
+
+    if request.metric == "gross_margin":
+        return analyze_margin_variance(records, request, retriever)
+    if request.metric not in {"revenue_amount", "production_yield_pct"}:
+        return CommentaryResult(
+            status="INSUFFICIENT_DATA",
+            summary=f"Metric {request.metric!r} is not supported.",
+            evidence=(),
+            caveats=("Choose one of the supported semantic metrics.",),
+        )
+
+    current = _find_record(records, request.company_code, request.current_month)
+    prior = _find_record(records, request.company_code, request.prior_month)
+    if request.metric == "revenue_amount":
+        current_value = _metric(current or {}, request.currency, request.metric)
+        prior_value = _metric(prior or {}, request.currency, request.metric)
+        source = "semantic.finance.revenue_amount"
+        unit = request.currency
+        title = "Revenue"
+    else:
+        current_value = (current or {}).get("production", {}).get("yield_pct")
+        prior_value = (prior or {}).get("production", {}).get("yield_pct")
+        current_value = None if current_value is None else Decimal(str(current_value))
+        prior_value = None if prior_value is None else Decimal(str(prior_value))
+        source = "semantic.production.yield_pct"
+        unit = "percentage points"
+        title = "Production yield"
+    if current_value is None or prior_value is None:
+        return CommentaryResult(
+            status="INSUFFICIENT_DATA",
+            summary=f"There is not enough semantic evidence to compare {title.lower()}.",
+            evidence=(),
+            caveats=("Both requested periods must contain the selected metric.",),
+        )
+    variance = current_value - prior_value
+    direction = "increased" if variance > 0 else "declined" if variance < 0 else "was unchanged"
+    knowledge = (retriever or LexicalKnowledgeRetriever()).retrieve(
+        request.question or request.metric, metric=request.metric
+    )
+    evidence = (
+        EvidenceItem(request.metric, request.prior_month, decimal_text(prior_value), source, f"Prior-period {title.lower()}."),
+        EvidenceItem(request.metric, request.current_month, decimal_text(current_value), source, f"Current-period {title.lower()}."),
+    )
+    sources = tuple(["semantic.snapshot"] + [str(item["id"]) for item in knowledge if item.get("id")])
+    return CommentaryResult(
+        status="READY",
+        summary=f"{title} {direction} by {decimal_text(abs(variance))} {unit} from {request.prior_month} to {request.current_month}.",
+        evidence=evidence,
+        caveats=("This is deterministic variance analysis; no causal conclusion or LLM-generated explanation is made.",),
+        variance=decimal_text(variance),
+        knowledge=knowledge,
+        sources=sources,
+    )
